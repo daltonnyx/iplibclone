@@ -1,0 +1,146 @@
+
+            
+              
+
+            INID
+
+            
+              
+
+             Tên trường
+
+             
+              
+
+           Nội dung
+
+           
+            
+            
+              (210)
+              SỐ ĐƠN
+              4-1990-01359
+            
+            
+              (220)
+              NGÀY NỘP ĐƠN
+              06/04/1990
+            
+            
+              (300)
+              NGÀY ƯU TIÊN
+              06/04/1990
+            
+			
+            
+              (540)
+              TÊN NHÃN HIỆU
+               SIAMVIC			  
+            
+				
+            
+              
+               
+              
+              
+            
+			
+            
+              
+              LOẠI NHÃN HIỆU
+              Thông thường
+            
+				
+			
+            
+              
+              MÀU NHÃN HIỆU
+              0
+            
+						
+          
+            (511) 
+            NHÓM SẢN PHẨM / DỊCH VỤ
+            01 Hoá chất dùng trong công nghiệp và khoa học; nhựa nhân tạo và tổng hợp chưa chế biến, chất dẻo chưa chế biến.
+                         
+                     
+                             
+          
+       
+
+            
+              (731) / (732)
+              NGƯỜI NỘP ĐƠN / CHỦ SỞ HỮU 
+              Solvay (Societe Anonyme) / SOLVAY (Societé Anonyme)
+            
+					        
+          
+             
+            ĐỊA CHỈ NGƯỜI NỘP ĐƠN
+            
+                
+                  RUE DU PRINCE ALBERT, 33 B-1050 BRUSSELS (BELGIUM) 
+                    
+                
+            
+          
+          
+            
+            ĐỊA CHỈ CHỦ SỞ HỮU
+            
+                
+                  Rue du Prince Albert, 33 B-1050 Brussels, Belgium
+                   
+                
+            
+          
+          
+            
+            CHỦ CŨ
+            
+                
+                  Tên chủ sở hữu
+                  Điạ chỉ chủ sở hữu
+                
+                
+                   SOLVAY and CIE S.A. 
+                   RUE DU PRINCE ALBERT, 33 B-1050 BRUSSELS (BELGIUM) 
+                
+            
+          
+          
+            (111) 
+            SỐ BẰNG
+            4-0001784-000
+          
+          
+            
+            NGÀY CẤP BẰNG
+            01/10/1990
+
+          
+          
+            
+            NGÀY CÔNG BỐ BẰNG
+            25/02/1991    35
+
+          
+          
+            
+            SỐ LẦN GIA HẠN
+            2
+          
+          
+            
+            MÃ SỐ YÊU CẦU GIA HẠN
+            GH420100470
+          
+          
+            (141) 
+            NGÀY HẾT HẠN
+            06/04/2020
+
+          
+         
+		 	  
+          
