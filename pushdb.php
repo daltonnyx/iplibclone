@@ -151,7 +151,7 @@ function createdata($data, $file) {
     $isNew = true;
     
     if( $res !== false && $res->rowCount() == 0 ) {
-    $script = "INSERT INTO iplibclone.thuong_hieu (so_hieu,ten_nhan_hieu,ngay_nop_don,ngay_uu_tien,logo,loai_nhan_hieu,mau_nhan_hieu,noi_dung_khac,chu_so_huu,dia_chi_nguoi_nop_don,dia_chi_nguoi_so_huu,so_bang,ngay_cap_bang,ngay_cong_bo_bang,ngay_het_han,tai_lieu,phan_loai_hinh,chu_cu,so_lan_gia_han)";
+    $script = "INSERT INTO iplibclone.thuong_hieu (so_hieu,ten_nhan_hieu,ngay_nop_don,ngay_uu_tien,logo,loai_nhan_hieu,mau_nhan_hieu,noi_dung_khac,chu_so_huu,dia_chi_nguoi_nop_don,dia_chi_nguoi_so_huu,so_bang,ngay_cap_bang,ngay_cong_bo_bang,ngay_het_han,tai_lieu,phan_loai_hinh,chu_cu,so_lan_gia_han, to_chuc_dai_dien_shtt)";
     $script .= "VALUE("
             . "'".@$data['so_don']."', "
             . "'".@$data['ten_nhan_hieu']."', "
@@ -171,7 +171,8 @@ function createdata($data, $file) {
             . "'".@serialize($data['tai_lieu'])."', "
             . "'".@serialize($data['phan_loai_hinh'])."', "
             . "'".@serialize($data['chu_cu'])."', "
-            . "".@($data['so_lan_gia_han'] == "" ? 0 : $data['so_lan_gia_han']).""
+            . "".@($data['so_lan_gia_han'] == "" ? 0 : $data['so_lan_gia_han']).", "
+            . "'".@$data['to_chuc_dai_dien_shtt']."'"
             . ");";
     }
     else if($res->rowCount() > 0) {
@@ -180,7 +181,7 @@ function createdata($data, $file) {
             "logo = '$logo', loai_nhan_hieu = '$loai_nhan_hieu', mau_nhan_hieu = $mau_nhan_hieu, noi_dung_khac = '$noi_dung_khac', chu_so_huu = '$chu_so_huu', dia_chi_nguoi_nop_don = '$dia_chi_nguoi_nop_don', ".
             "dia_chi_nguoi_so_huu = '$dia_chi_chu_so_huu', so_bang = '$so_bang', ngay_cap_bang = '".get_date($ngay_cap_bang)."', ngay_cong_bo_bang = '".get_date($ngay_cong_bo_bang)."', ".
             "ngay_het_han = '".get_date($ngay_het_han)."', tai_lieu = '".serialize($tai_lieu)."', phan_loai_hinh = '".serialize($phan_loai_hinh)."', chu_cu = '".serialize($chu_cu)."', ".
-            "so_lan_gia_han = ". ($so_lan_gia_han == "" ? 0 : $so_lan_gia_han) ." WHERE so_hieu = '$so_don';";
+            "so_lan_gia_han = ". ($so_lan_gia_han == "" ? 0 : $so_lan_gia_han) .", to_chuc_dai_dien_shtt = '$to_chuc_dai_dien_shtt' WHERE so_hieu = '$so_don';";
         $isNew = false;
     }
     $dbc->exec($script);
