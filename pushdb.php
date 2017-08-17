@@ -3,8 +3,11 @@ $data_files = scandir('./data');
 array_shift($data_files);
 array_shift($data_files);
 foreach($data_files as $file) {
-    if(isRead($file) > 0)
+    if(isRead($file) > 0 && !isModified($file)) {
+        echo "skipping $file \r\n";
         continue;
+    }
+        
     $resource = fopen("./data/$file", "r");
     if($content = fread($resource, filesize("./data/$file"))) {
         $doc = new DOMDocument();
@@ -119,13 +122,17 @@ function isRead($file) {
     return $rows->rowCount();
 }
 
+function isModified($file) {
+    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
+    $s = $dbc->query("SELECT hash_data from read_data where file_name='$file'");
+    $row = $s->fetch(PDO::FETCH_ASSOC);
+    return $row['hash_data'] != hash_file('md5', './data/'.$file);
+}
+
 function createdata($data, $file) {
     $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
     echo "insert ".$data['so_don']." to db \r\n";
     $nhom_ids = array();
-    $row = $dbc->query("SELECT id FROM thuong_hieu WHERE so_hieu='".$data['so_don']."'");
-    if($row->rowCount() > 0)
-        return;
     if(isset($data["nhom"])) {
         foreach($data["nhom"] as $nhom) {
             if(trim($nhom) == "") continue;
@@ -140,7 +147,10 @@ function createdata($data, $file) {
             $nhom_ids[] = $id;
         }
     }
+    $res = $dbc->query("SELECT id from iplibclone.thuong_hieu where so_hieu='".$data['so_don']."'");
+    $isNew = true;
     
+    if( $res !== false && $res->rowCount() == 0 ) {
     $script = "INSERT INTO iplibclone.thuong_hieu (so_hieu,ten_nhan_hieu,ngay_nop_don,ngay_uu_tien,logo,loai_nhan_hieu,mau_nhan_hieu,noi_dung_khac,chu_so_huu,dia_chi_nguoi_nop_don,dia_chi_nguoi_so_huu,so_bang,ngay_cap_bang,ngay_cong_bo_bang,ngay_het_han,tai_lieu,phan_loai_hinh,chu_cu,so_lan_gia_han)";
     $script .= "VALUE("
             . "'".@$data['so_don']."', "
@@ -163,12 +173,29 @@ function createdata($data, $file) {
             . "'".@serialize($data['chu_cu'])."', "
             . "".@($data['so_lan_gia_han'] == "" ? 0 : $data['so_lan_gia_han']).""
             . ");";
+    }
+    else if($res->rowCount() > 0) {
+        extract($data);
+        @$script = "UPDATE iplibclone.thuong_hieu SET ten_nhan_hieu = '$ten_nhan_hieu', ngay_nop_don = '".get_date($ngay_nop_don)."', ngay_uu_tien = '".get_date($ngay_uu_tien)."', ".
+            "logo = '$logo', loai_nhan_hieu = '$loai_nhan_hieu', mau_nhan_hieu = $mau_nhan_hieu, noi_dung_khac = '$noi_dung_khac', chu_so_huu = '$chu_so_huu', dia_chi_nguoi_nop_don = '$dia_chi_nguoi_nop_don', ".
+            "dia_chi_nguoi_so_huu = '$dia_chi_chu_so_huu', so_bang = '$so_bang', ngay_cap_bang = '".get_date($ngay_cap_bang)."', ngay_cong_bo_bang = '".get_date($ngay_cong_bo_bang)."', ".
+            "ngay_het_han = '".get_date($ngay_het_han)."', tai_lieu = '".serialize($tai_lieu)."', phan_loai_hinh = '".serialize($phan_loai_hinh)."', chu_cu = '".serialize($chu_cu)."', ".
+            "so_lan_gia_han = ". ($so_lan_gia_han == "" ? 0 : $so_lan_gia_han) ." WHERE so_hieu = '$so_don';";
+        $isNew = false;
+    }
     $dbc->exec($script);
     $row_id = $dbc->lastInsertId();
-    foreach($nhom_ids as $nhom) {
-        $dbc->exec("INSERT INTO thuong_hieu_loai(thuong_hieu, loai)VALUE($row_id, $nhom)");
+    if($isNew)
+        foreach($nhom_ids as $nhom) {
+            $dbc->exec("INSERT INTO thuong_hieu_loai(thuong_hieu, loai)VALUE($row_id, $nhom)");
+        }
+    $hash = hash_file('md5', './data/'.$file);
+    if($isNew) {
+        $dbc->exec("INSERT INTO read_data(file_name, key_id, hash_data)VALUE('$file', '".$data['so_don']."','$hash')");
     }
-    $dbc->exec("INSERT INTO read_data(file_name, key_id)VALUE('$file', '".$data['so_don']."')");
+    else {
+        $dbc->exec("UPDATE read_data SET hash_data = '$hash' WHERE file_name = '$file'");
+    }
 }
 
 
