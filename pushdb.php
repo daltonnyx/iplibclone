@@ -22,61 +22,61 @@ foreach($data_files as $file) {
         foreach($array_data as $idx => $sample) {
             if($idx < 1) continue;
             switch(trim($array_data[$idx - 1])) {
-                case 'Sá» ÄÆ N':
+                case 'SỐ ĐƠN':
                     $data["so_don"] = trim($sample);
                     break;
-                case 'NGÃ€Y Ná»˜P ÄÆ N':
+                case 'NGÀY NỘP ĐƠN':
                     $data["ngay_nop_don"] = trim($sample);
                     break;
-                case 'NGÃ€Y Æ¯U TIÃŠN':
+                case 'NGÀY ƯU TIÊN':
                     $data["ngay_uu_tien"] = trim($sample);
                     break;
-                case 'TÃŠN NHÃƒN HIá»†U':
+                case 'TÊN NHÃN HIỆU':
                     $data["ten_nhan_hieu"] = trim($sample);
                     break;
-                case 'LOáº I NHÃƒN HIá»†U':
+                case 'LOẠI NHÃN HIỆU':
                     $data["loai_nhan_hieu"] = trim($sample);
                     break;
-                case 'MÃ€U NHÃƒN HIá»†U':
+                case 'MÀU NHÃN HIỆU':
                     $data["mau_nhan_hieu"] = trim($sample);
                     break;
-                case 'Ná»˜I DUNG KHÃC':
+                case 'NỘI DUNG KHÁC':
                     $data["noi_dung_khac"] = trim($sample);
                     break;
-                case 'NHÃ“M Sáº¢N PHáº¨M / Dá»ŠCH Vá»¤':
+                case 'NHÓM SẢN PHẨM / DỊCH VỤ':
                     $data["nhom"] = preg_split("/(\.\s+(?=\d+)|\.$|$)/",trim($sample));
                     array_pop($data["nhom"]);
                     break;
-                case 'NGÆ¯á»œI Ná»˜P ÄÆ N / CHá»¦ Sá»ž Há»®U':
+                case 'NGƯỜI NỘP ĐƠN / CHỦ SỞ HỮU':
                     $data['chu_so_huu'] = trim($sample);
                     break;
-                case 'Äá»ŠA CHá»ˆ NGÆ¯á»œI Ná»˜P ÄÆ N':
+                case 'ĐỊA CHỈ NGƯỜI NỘP ĐƠN':
                     $data["dia_chi_nguoi_nop_don"] = trim($sample);
                     break;
-                case 'Äá»ŠA CHá»ˆ CHá»¦ Sá»ž Há»®U':
+                case 'ĐỊA CHỈ CHỦ SỞ HỮU':
                     $data["dia_chi_chu_so_huu"] = trim($sample);
                     break;
-                case 'Sá» Báº°NG':
+                case 'SỐ BẰNG':
                     $data["so_bang"] = trim($sample);
                     break;
-                case 'NGÃ€Y Cáº¤P Báº°NG':
+                case 'NGÀY CẤP BẰNG':
                     $data["ngay_cap_bang"] = trim($sample);
                     break;
-                case 'NGÃ€Y CÃ”NG Bá» Báº°NG':
+                case 'NGÀY CÔNG BỐ BẰNG':
                     $data["ngay_cong_bo_bang"] = trim($sample);
                     break;
-                case 'NGÃ€Y Háº¾T Háº N':
+                case 'NGÀY HẾT HẠN':
                     $data["ngay_het_han"] = trim($sample);
                     break;
-                case 'Sá» Láº¦N GIA Háº N':
+                case 'SỐ LẦN GIA HẠN':
                     $data["so_lan_gia_han"] = trim($sample);
                     break;
-                case 'MÃƒ Sá» YÃŠU Cáº¦U': case 'MÃƒ Sá» YÃŠU Cáº¦U GIA Háº N':
+                case 'MÃ SỐ YÊU CẦU': case 'MÃ SỐ YÊU CẦU GIA HẠN':
                     $data["ma_so_yeu_cau"] = trim($sample);
                     break;
-                case 'Tá»” CHá»¨C Äáº I DIá»†N SHTT':
+                case 'TỔ CHỨC ĐẠI DIỆN SHTT':
                     $data["to_chuc_dai_dien_shtt"] = trim($sample);
-                case 'TÃ€I LIá»†U TRUNG GIAN':
+                case 'TÀI LIỆU TRUNG GIAN':
                     $data["tai_lieu"] = array();
                     $i = 1;
                     while($idx + $i < count($array_data) && trim($array_data[$idx+$i]) != "") {
@@ -84,7 +84,7 @@ foreach($data_files as $file) {
                         $i++;
                     }
                     break;
-                case 'CHá»¦ CÅ¨':
+                case 'CHỦ CŨ':
                     $i = $idx+2;
                     while($array_data[$i] < count($array_data) && trim($array_data[$i]) != "(111)") {
                         $data["chu_cu"] = array(
@@ -94,7 +94,7 @@ foreach($data_files as $file) {
                         $i+=2;
                     }
                     break;
-                case 'PHÃ‚N LOáº I HÃŒNH':
+                case 'PHÂN LOẠI HÌNH':
                     $i = $idx;
                     $data["phan_loai_hinh"] = array();
                     while($array_data[$i] < count($array_data) && trim($array_data[$i]) != "(731) / (732)") {
