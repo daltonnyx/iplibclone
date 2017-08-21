@@ -14,16 +14,32 @@ class ThuongHieu extends Model
         $whereClause = array();
         $bindings = array();
         foreach($inputs as $field => $value) {
-            if($value != null && $field != 'page' && $field != 'total') {
-                array_push($whereClause, "MATCH($field) AGAINST (? IN BOOLEAN MODE)");
+            if($value == null) continue;
+            if($field == 'ngay_nop_don') {
+                array_push($whereClause, "DATE_FORMAT(th.$field, '%d\/%m\/%Y') like ?");
+                $bindings[] = '%'.$value.'%';
+                continue;
+            }
+            if($field == 'nhom') {
+                array_push($whereClause, "loai.ma_spdv = ?");
+                $bindings[] = $value;
+                continue;
+            }
+            if($field == 'ten_nhom') {
+                array_push($whereClause, "MATCH(loai.ten) AGAINST (? IN BOOLEAN MODE)");
+                $bindings[] = $value;
+                continue;
+            }
+            if($field != 'page' && $field != 'total') {
+                array_push($whereClause, "MATCH(th.$field) AGAINST (? IN BOOLEAN MODE)");
                 $bindings[] = $value;       
             }
         }
         $offset = isset($inputs['page']) ? $inputs['page'] : 0 * 15;
         $paginate = "LIMIT $offset, 15";
-        $thuong_hieu = DB::select('select id, ten_nhan_hieu, so_hieu, ngay_nop_don, so_bang, chu_so_huu, logo from thuong_hieu where '. implode(" AND ", $whereClause) .' '. $paginate, $bindings);
+        $thuong_hieu = DB::select('select th.id, ten_nhan_hieu, so_hieu, ngay_nop_don, so_bang, chu_so_huu, logo from thuong_hieu th join thuong_hieu_loai thl on thl.thuong_hieu = th.id left join loai_san_pham loai on thl.loai = loai.id  where '. implode(" AND ", $whereClause) .' '. $paginate, $bindings);
         if(!isset($inputs['total'])) {
-            $count = DB::select("select count(*) as total from thuong_hieu where ". implode(" AND ", $whereClause), $bindings);
+            $count = DB::select("select count(*) as total from thuong_hieu th join thuong_hieu_loai thl on thl.thuong_hieu = th.id left join loai_san_pham loai on thl.loai = loai.id where ". implode(" AND ", $whereClause), $bindings);
             $total_page = ceil($count[0]->total / 15);
         }
         else {
