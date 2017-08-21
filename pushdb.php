@@ -22,61 +22,61 @@ foreach($data_files as $file) {
         foreach($array_data as $idx => $sample) {
             if($idx < 1) continue;
             switch(trim($array_data[$idx - 1])) {
-                case 'SỐ ĐƠN':
+                case 'Sá» ÄÆ N':
                     $data["so_don"] = trim($sample);
                     break;
-                case 'NGÀY NỘP ĐƠN':
+                case 'NGÃ€Y Ná»˜P ÄÆ N':
                     $data["ngay_nop_don"] = trim($sample);
                     break;
-                case 'NGÀY ƯU TIÊN':
+                case 'NGÃ€Y Æ¯U TIÃŠN':
                     $data["ngay_uu_tien"] = trim($sample);
                     break;
-                case 'TÊN NHÃN HIỆU':
+                case 'TÃŠN NHÃƒN HIá»†U':
                     $data["ten_nhan_hieu"] = trim($sample);
                     break;
-                case 'LOẠI NHÃN HIỆU':
+                case 'LOáº I NHÃƒN HIá»†U':
                     $data["loai_nhan_hieu"] = trim($sample);
                     break;
-                case 'MÀU NHÃN HIỆU':
+                case 'MÃ€U NHÃƒN HIá»†U':
                     $data["mau_nhan_hieu"] = trim($sample);
                     break;
-                case 'NỘI DUNG KHÁC':
+                case 'Ná»˜I DUNG KHÃC':
                     $data["noi_dung_khac"] = trim($sample);
                     break;
-                case 'NHÓM SẢN PHẨM / DỊCH VỤ':
+                case 'NHÃ“M Sáº¢N PHáº¨M / Dá»ŠCH Vá»¤':
                     $data["nhom"] = preg_split("/(\.\s+(?=\d+)|\.$|$)/",trim($sample));
                     array_pop($data["nhom"]);
                     break;
-                case 'NGƯỜI NỘP ĐƠN / CHỦ SỞ HỮU':
+                case 'NGÆ¯á»œI Ná»˜P ÄÆ N / CHá»¦ Sá»ž Há»®U':
                     $data['chu_so_huu'] = trim($sample);
                     break;
-                case 'ĐỊA CHỈ NGƯỜI NỘP ĐƠN':
+                case 'Äá»ŠA CHá»ˆ NGÆ¯á»œI Ná»˜P ÄÆ N':
                     $data["dia_chi_nguoi_nop_don"] = trim($sample);
                     break;
-                case 'ĐỊA CHỈ CHỦ SỞ HỮU':
+                case 'Äá»ŠA CHá»ˆ CHá»¦ Sá»ž Há»®U':
                     $data["dia_chi_chu_so_huu"] = trim($sample);
                     break;
-                case 'SỐ BẰNG':
+                case 'Sá» Báº°NG':
                     $data["so_bang"] = trim($sample);
                     break;
-                case 'NGÀY CẤP BẰNG':
+                case 'NGÃ€Y Cáº¤P Báº°NG':
                     $data["ngay_cap_bang"] = trim($sample);
                     break;
-                case 'NGÀY CÔNG BỐ BẰNG':
+                case 'NGÃ€Y CÃ”NG Bá» Báº°NG':
                     $data["ngay_cong_bo_bang"] = trim($sample);
                     break;
-                case 'NGÀY HẾT HẠN':
+                case 'NGÃ€Y Háº¾T Háº N':
                     $data["ngay_het_han"] = trim($sample);
                     break;
-                case 'SỐ LẦN GIA HẠN':
+                case 'Sá» Láº¦N GIA Háº N':
                     $data["so_lan_gia_han"] = trim($sample);
                     break;
-                case 'MÃ SỐ YÊU CẦU': case 'MÃ SỐ YÊU CẦU GIA HẠN':
+                case 'MÃƒ Sá» YÃŠU Cáº¦U': case 'MÃƒ Sá» YÃŠU Cáº¦U GIA Háº N':
                     $data["ma_so_yeu_cau"] = trim($sample);
                     break;
-                case 'TỔ CHỨC ĐẠI DIỆN SHTT':
+                case 'Tá»” CHá»¨C Äáº I DIá»†N SHTT':
                     $data["to_chuc_dai_dien_shtt"] = trim($sample);
-                case 'TÀI LIỆU TRUNG GIAN':
+                case 'TÃ€I LIá»†U TRUNG GIAN':
                     $data["tai_lieu"] = array();
                     $i = 1;
                     while($idx + $i < count($array_data) && trim($array_data[$idx+$i]) != "") {
@@ -84,7 +84,7 @@ foreach($data_files as $file) {
                         $i++;
                     }
                     break;
-                case 'CHỦ CŨ':
+                case 'CHá»¦ CÅ¨':
                     $i = $idx+2;
                     while($array_data[$i] < count($array_data) && trim($array_data[$i]) != "(111)") {
                         $data["chu_cu"] = array(
@@ -94,7 +94,7 @@ foreach($data_files as $file) {
                         $i+=2;
                     }
                     break;
-                case 'PHÂN LOẠI HÌNH':
+                case 'PHÃ‚N LOáº I HÃŒNH':
                     $i = $idx;
                     $data["phan_loai_hinh"] = array();
                     while($array_data[$i] < count($array_data) && trim($array_data[$i]) != "(731) / (732)") {
@@ -117,20 +117,20 @@ foreach($data_files as $file) {
 }
 
 function isRead($file) {
-    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
+    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone;charset=utf8", "root","haymora113");
     $rows = $dbc->query("SELECT id FROM read_data WHERE file_name = '$file'");
     return $rows->rowCount();
 }
 
 function isModified($file) {
-    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
+    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone;charset=utf8", "root","haymora113");
     $s = $dbc->query("SELECT hash_data from read_data where file_name='$file'");
     $row = $s->fetch(PDO::FETCH_ASSOC);
     return $row['hash_data'] != hash_file('md5', './data/'.$file);
 }
 
 function createdata($data, $file) {
-    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
+    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone;charset=utf8", "root","haymora113");
     echo "insert ".$data['so_don']." to db \r\n";
     $nhom_ids = array();
     if(isset($data["nhom"])) {
@@ -138,13 +138,12 @@ function createdata($data, $file) {
             if(trim($nhom) == "") continue;
             $matches = array();
             preg_match("/(\d+)\s*(.+)/",$nhom,$matches);
-            if(count($matches) < 1) echo var_dump($nhom);
             $id = $matches[1];
             $name = $matches[2];
-            $result = $dbc->query("SELECT id FROM iplibclone.loai_san_pham where id = $id");
+            $result = $dbc->query("SELECT id FROM iplibclone.loai_san_pham where ma_spdv = '$id' and ten = '$name'");
             if($result !== false && $result->rowCount() == 0)
-               $dbc->exec("INSERT INTO iplibclone.loai_san_pham (id,ten) VALUES ($id,'$name');");
-            $nhom_ids[] = $id;
+               $dbc->exec("INSERT INTO iplibclone.loai_san_pham (ten, ma_spdv) VALUES ('$name', '$id');");
+            $nhom_ids[] = $dbc->lastInsertId();
         }
     }
     $res = $dbc->query("SELECT id from iplibclone.thuong_hieu where so_hieu='".$data['so_don']."'");
@@ -186,10 +185,11 @@ function createdata($data, $file) {
     }
     $dbc->exec($script);
     $row_id = $dbc->lastInsertId();
-    if($isNew)
+    if($isNew) {
         foreach($nhom_ids as $nhom) {
             $dbc->exec("INSERT INTO thuong_hieu_loai(thuong_hieu, loai)VALUE($row_id, $nhom)");
         }
+    }
     $hash = hash_file('md5', './data/'.$file);
     if($isNew) {
         $dbc->exec("INSERT INTO read_data(file_name, key_id, hash_data)VALUE('$file', '".$data['so_don']."','$hash')");
