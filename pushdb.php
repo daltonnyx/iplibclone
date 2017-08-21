@@ -117,20 +117,20 @@ foreach($data_files as $file) {
 }
 
 function isRead($file) {
-    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
+    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone;charset=utf8", "root","haymora113");
     $rows = $dbc->query("SELECT id FROM read_data WHERE file_name = '$file'");
     return $rows->rowCount();
 }
 
 function isModified($file) {
-    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
+    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone;charset=utf8", "root","haymora113");
     $s = $dbc->query("SELECT hash_data from read_data where file_name='$file'");
     $row = $s->fetch(PDO::FETCH_ASSOC);
     return $row['hash_data'] != hash_file('md5', './data/'.$file);
 }
 
 function createdata($data, $file) {
-    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone", "root");
+    $dbc = new PDO("mysql:host=localhost;dbname=iplibclone;charset=utf8", "root","haymora113");
     echo "insert ".$data['so_don']." to db \r\n";
     $nhom_ids = array();
     if(isset($data["nhom"])) {
@@ -138,13 +138,17 @@ function createdata($data, $file) {
             if(trim($nhom) == "") continue;
             $matches = array();
             preg_match("/(\d+)\s*(.+)/",$nhom,$matches);
-            if(count($matches) < 1) echo var_dump($nhom);
             $id = $matches[1];
             $name = $matches[2];
-            $result = $dbc->query("SELECT id FROM iplibclone.loai_san_pham where id = $id");
-            if($result !== false && $result->rowCount() == 0)
-               $dbc->exec("INSERT INTO iplibclone.loai_san_pham (id,ten) VALUES ($id,'$name');");
-            $nhom_ids[] = $id;
+            $result = $dbc->query("SELECT id FROM iplibclone.loai_san_pham where ma_spdv = '$id' and ten = '$name'");
+            if($result !== false && $result->rowCount() == 0) {
+               $dbc->exec("INSERT INTO iplibclone.loai_san_pham (ten, ma_spdv) VALUES ('$name', '$id');");
+               $nhom_ids[] = $dbc->lastInsertId();
+            }
+            else if($result !== false) {
+                $row = $result->fetch(PDO::FETCH_ASSOC);
+                $nhom_ids[] = $row['id'];
+            }
         }
     }
     $res = $dbc->query("SELECT id from iplibclone.thuong_hieu where so_hieu='".$data['so_don']."'");
@@ -186,10 +190,11 @@ function createdata($data, $file) {
     }
     $dbc->exec($script);
     $row_id = $dbc->lastInsertId();
-    if($isNew)
+    if($isNew) {
         foreach($nhom_ids as $nhom) {
             $dbc->exec("INSERT INTO thuong_hieu_loai(thuong_hieu, loai)VALUE($row_id, $nhom)");
         }
+    }
     $hash = hash_file('md5', './data/'.$file);
     if($isNew) {
         $dbc->exec("INSERT INTO read_data(file_name, key_id, hash_data)VALUE('$file', '".$data['so_don']."','$hash')");
