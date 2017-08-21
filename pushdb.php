@@ -145,7 +145,7 @@ function createdata($data, $file) {
                $dbc->exec("INSERT INTO iplibclone.loai_san_pham (ten, ma_spdv) VALUES ('$name', '$id');");
                $nhom_ids[] = $dbc->lastInsertId();
             }
-            else {
+            else if($result !== false) {
                 $row = $result->fetch(PDO::FETCH_ASSOC);
                 $nhom_ids[] = $row['id'];
             }
