@@ -141,9 +141,14 @@ function createdata($data, $file) {
             $id = $matches[1];
             $name = $matches[2];
             $result = $dbc->query("SELECT id FROM iplibclone.loai_san_pham where ma_spdv = '$id' and ten = '$name'");
-            if($result !== false && $result->rowCount() == 0)
+            if($result !== false && $result->rowCount() == 0) {
                $dbc->exec("INSERT INTO iplibclone.loai_san_pham (ten, ma_spdv) VALUES ('$name', '$id');");
-            $nhom_ids[] = $dbc->lastInsertId();
+               $nhom_ids[] = $dbc->lastInsertId();
+            }
+            else {
+                $row = $result->fetch(PDO::FETCH_ASSOC);
+                $nhom_ids[] = $row['id'];
+            }
         }
     }
     $res = $dbc->query("SELECT id from iplibclone.thuong_hieu where so_hieu='".$data['so_don']."'");
